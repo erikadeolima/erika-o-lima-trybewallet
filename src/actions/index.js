@@ -1,37 +1,41 @@
 // Coloque aqui suas actions
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_WALLET = 'USER_WALLET';
-export const REQUEST_API = 'REQUEST_API';
-export const REQUEST_API_SUCCESS = 'REQUEST_API_SUCCESS';
-export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const CURRENCIES_REQUEST = 'CURRENCIES_REQUEST';
+export const CURRENCIES_REQUEST_SUCESS = 'CURRENCIES_REQUEST_SUCESS';
+export const CURRENCIES_REQUEST_FAILURE = 'CURRENCIES_REQUEST_FAILURE';
 
 export const userLogin = (payload) => ({
   type: USER_LOGIN,
   payload,
 });
 
-export const requestApi = () => ({
-  type: REQUEST_API,
+export const currenciesRequest = () => ({
+  type: CURRENCIES_REQUEST,
 });
 
-export const requestApiSuccess = (payload) => ({
-  type: REQUEST_API_SUCCESS,
-  payload,
+export const currenciesRequestSucess = (currencies) => ({
+  type: CURRENCIES_REQUEST_SUCESS,
+  payload: currencies,
 });
 
-export function fetchAPI() {
+export const currenciesRequestFailure = (errorMsg) => ({
+  type: CURRENCIES_REQUEST_FAILURE,
+  payload: errorMsg,
+});
+
+export function fetchCurrencies() {
   const URL = 'https://economia.awesomeapi.com.br/json/all';
-  return async (dispatch) => {
-    const response = await fetch(URL);
-    const data = await response.json();
-    return dispatch(requestApiSuccess(data));
-  };
+  return fetch(URL)
+    .then((response) => {
+      const currencies = response.data;
+      dispatch(currenciesRequestSucess(currencies));
+    })
+    .catch((error) => {
+      const errorMsg = error.message;
+      dispatch(currenciesRequestFailure(errorMsg));
+    });
 }
-
-export const expenseAction = (payload) => ({
-  type: ADD_EXPENSE,
-  payload,
-});
 
 export const userWallet = (payload) => ({
   type: USER_WALLET,

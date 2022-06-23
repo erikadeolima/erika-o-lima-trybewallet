@@ -1,14 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+/* import PropTypes from 'prop-types'; */
 import { connect } from 'react-redux';
-import { fetchAPI } from '../actions';
+/* import { fetchAPI } from '../actions'; */
 import Header from '../components/Header';
 
 class Wallet extends React.Component {
-  componentDidMount() {
+  /* componentDidMount() {
     const { dispatchFetchedApi } = this.props;
     dispatchFetchedApi();
-  }
+  } */
 
   render() {
     return (
@@ -20,9 +20,9 @@ class Wallet extends React.Component {
   }
 }
 
-Wallet.propTypes = {
+/* Wallet.propTypes = {
   dispatchFetchedApi: PropTypes.func.isRequired,
-};
+}; */
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchFetchedApi: () => dispatch(fetchAPI()),
