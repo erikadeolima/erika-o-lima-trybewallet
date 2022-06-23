@@ -1,14 +1,15 @@
 import React from 'react';
-/* import PropTypes from 'prop-types'; */
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-/* import { fetchAPI } from '../actions'; */
+import { fetchCurrencies } from '../actions';
+
 import Header from '../components/Header';
 
 class Wallet extends React.Component {
-  /* componentDidMount() {
-    const { dispatchFetchedApi } = this.props;
-    dispatchFetchedApi();
-  } */
+  async componentDidMount() {
+    const { dispatchFetchCurrencies } = this.props;
+    await dispatchFetchCurrencies();
+  }
 
   render() {
     return (
@@ -20,11 +21,11 @@ class Wallet extends React.Component {
   }
 }
 
-/* Wallet.propTypes = {
-  dispatchFetchedApi: PropTypes.func.isRequired,
-}; */
+Wallet.propTypes = {
+  dispatchFetchCurrencies: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchFetchedApi: () => dispatch(fetchAPI()),
+  dispatchFetchCurrencies: () => dispatch(fetchCurrencies()),
 });
 export default connect(null, mapDispatchToProps)(Wallet);

@@ -25,16 +25,21 @@ export const currenciesRequestFailure = (errorMsg) => ({
 });
 
 export function fetchCurrencies() {
-  const URL = 'https://economia.awesomeapi.com.br/json/all';
-  return fetch(URL)
-    .then((response) => {
-      const currencies = response.data;
-      dispatch(currenciesRequestSucess(currencies));
-    })
-    .catch((error) => {
-      const errorMsg = error.message;
-      dispatch(currenciesRequestFailure(errorMsg));
-    });
+  /* .then((response) => {
+    const currencies = response.data;
+    console.log(data);
+    dispatch(currenciesRequestSucess(currencies));
+  })
+  .catch((error) => {
+    const errorMsg = error.message;
+    dispatch(currenciesRequestFailure(errorMsg));
+  }); */
+  return async (dispatch) => {
+    const resp = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const data = await resp.json();
+    const currencies = data.filter((key) => key !== 'USDT');
+    dispatch(currenciesRequestSucess(currencies));
+  };
 }
 
 export const userWallet = (payload) => ({
