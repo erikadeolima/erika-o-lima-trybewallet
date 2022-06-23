@@ -37,7 +37,8 @@ export function fetchCurrencies() {
   return async (dispatch) => {
     const resp = await fetch('https://economia.awesomeapi.com.br/json/all');
     const data = await resp.json();
-    const currencies = data.filter((key) => key !== 'USDT');
+    const arr = Object.keys(data);
+    const currencies = arr.filter((key) => key !== 'USDT');
     dispatch(currenciesRequestSucess(currencies));
   };
 }

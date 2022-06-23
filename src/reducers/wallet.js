@@ -20,7 +20,7 @@ function walletReducer(state = initialState, action) {
   case CURRENCIES_REQUEST_SUCESS:
     return {
       ...state,
-      currencies: Object.keys(action.payload),
+      currencies: action.payload,
     };
   case CURRENCIES_REQUEST_FAILURE:
     return {
