@@ -1,16 +1,15 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Login from './pages/Login';
+import Login from '../pages/Login';
 
-function App() {
-  return (
-    <>
-      <div>Hello, TrybeWallet!</div>
+class Content extends React.Component {
+  render() {
+    return (
       <Switch>
         <Route exact path="/" component={ Login } />
       </Switch>
-    </>
-  );
+    );
+  }
 }
 
-export default App;
+export default Content;
