@@ -6,14 +6,14 @@ import { userWallet, updateValue } from '../actions';
 const expense = {
   value: '',
   description: '',
-  currency: '',
+  currency: 'USD',
   method: '',
   tag: '',
   /* id: 1, */
 };
 
 class ExpensesForm extends React.Component {
-  state = { expense }
+  state = { ...expense }
 
   onInputChange = ({ target }) => {
     const { name, value } = target;
@@ -34,12 +34,12 @@ class ExpensesForm extends React.Component {
       ...this.state,
       exchangeRates: conversion,
     });
-    this.setState(expense);
+    this.setState({ ...expense });
   }
 
   render() {
     const { currencies } = this.props;
-    const { expense: { value, description, currency, method, tag } } = this.state;
+    const { value, description, currency, method, tag } = this.state;
     return (
       <header>
         <form onSubmit={ this.registerButton }>
@@ -50,7 +50,7 @@ class ExpensesForm extends React.Component {
               name="value"
               type="text"
               data-testid="value-input"
-              defaultValue={ value }
+              value={ value }
               onChange={ this.onInputChange }
             />
           </label>
@@ -62,7 +62,7 @@ class ExpensesForm extends React.Component {
               name="description"
               type="text"
               data-testid="description-input"
-              defaultValue={ description }
+              value={ description }
               onChange={ this.onInputChange }
             />
           </label>
@@ -73,7 +73,7 @@ class ExpensesForm extends React.Component {
               id="currency"
               name="currency"
               data-testid="currencies-select"
-              defaultValue={ currency }
+              value={ currency }
               onChange={ this.onInputChange }
             >
               {/* <option>Selecione uma Moeda</option> */}
@@ -93,7 +93,7 @@ class ExpensesForm extends React.Component {
               id="method"
               name="method"
               data-testid="method-input"
-              defaultValue={ method }
+              value={ method }
               onChange={ this.onInputChange }
             >
               <option>Selecione um método de Pagamento</option>
@@ -110,7 +110,7 @@ class ExpensesForm extends React.Component {
               name="tag"
               type="dropdown"
               data-testid="tag-input"
-              defaultValue={ tag }
+              value={ tag }
               onChange={ this.onInputChange }
             >
               <option>Selecione uma categoria</option>

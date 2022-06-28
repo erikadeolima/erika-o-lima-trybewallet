@@ -13,7 +13,7 @@ class Header extends React.Component {
         <div>
           <div data-testid="email-field">{email}</div>
           <div data-testid="total-field">
-            Gasto Total:
+            {/* Gasto Total: */}
             {/* expenses */}
             { /* !expenses ? 0 : expenses.reduce((acc, exp) => {
               acc += (exp.exchangeRates[exp.currency].ask * exp.value);
