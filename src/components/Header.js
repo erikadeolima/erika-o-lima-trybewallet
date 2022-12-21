@@ -13,12 +13,12 @@ class Header extends React.Component {
         <div>
           <div data-testid="email-field">{email}</div>
           <div data-testid="total-field">
-            {/* Gasto Total: */}
+            Gasto Total:
             {/* expenses */}
-            { /* !expenses ? 0 : expenses.reduce((acc, exp) => {
+            { !expenses ? 0 : expenses.reduce((acc, exp) => {
               acc += (exp.exchangeRates[exp.currency].ask * exp.value);
               return acc;
-            }, 0).toFixed([2]) */}
+            }, 0).toFixed([2])}
             {expenses.length === 0 ? 0 : totalValueExpenses}
           </div>
           <div data-testid="header-currency-field">BRL</div>
@@ -31,9 +31,9 @@ class Header extends React.Component {
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
-  expenses: PropTypes.shape({
+  expenses: PropTypes.arrayOf(PropTypes.shape({
     length: PropTypes.number,
-  }).isRequired,
+  })).isRequired,
   totalValueExpenses: PropTypes.number.isRequired,
 };
 

@@ -4,6 +4,8 @@ export const USER_WALLET = 'USER_WALLET';
 export const CURRENCIES_REQUEST = 'CURRENCIES_REQUEST';
 export const CURRENCIES_REQUEST_SUCESS = 'CURRENCIES_REQUEST_SUCESS';
 export const UPDATE_VALUE = 'UPDATE_VALUE';
+export const DELETE_EXPENSES = 'DELETE_EXPENSES';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
 export const userLogin = (payload) => ({
   type: USER_LOGIN,
@@ -35,3 +37,14 @@ export const userWallet = (payload) => ({
 });
 
 export const updateValue = () => ({ type: UPDATE_VALUE });
+
+export const deleteExpensesAction = (id) => ({
+  type: DELETE_EXPENSES,
+  payload: id,
+});
+
+export const editExpense = (id, exchangeRates) => ({
+  type: EDIT_EXPENSE,
+  id,
+  exchangeRates,
+});

@@ -13,18 +13,19 @@ const expense = {
 };
 
 class ExpensesForm extends React.Component {
-  state = { ...expense }
+  state = { ...expense };
 
   onInputChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
-  }
+  };
 
   registerButton = async (event) => {
     event.preventDefault();
     const { saveExpenses, updateExpenses, expenses } = this.props;
-    const conversion = await fetch('https://economia.awesomeapi.com.br/json/all')
-      .then((response) => response.json());
+    const conversion = await fetch(
+      'https://economia.awesomeapi.com.br/json/all',
+    ).then((response) => response.json());
     saveExpenses({
       ...this.state,
       id: !expenses.length ? 0 : expenses.length,
@@ -35,10 +36,10 @@ class ExpensesForm extends React.Component {
       exchangeRates: conversion,
     });
     this.setState({ ...expense });
-  }
+  };
 
   render() {
-    const { currencies } = this.props;
+    const { currencies, editWallet } = this.props;
     const { value, description, currency, method, tag } = this.state;
     return (
       <header>
@@ -78,12 +79,10 @@ class ExpensesForm extends React.Component {
             >
               {/* <option>Selecione uma Moeda</option> */}
               {currencies.map((curr) => (
-                <option
-                  key={ curr }
-                  value={ curr }
-                >
+                <option key={ curr } value={ curr }>
                   {curr}
-                </option>))}
+                </option>
+              ))}
             </select>
           </label>
           {' '}
@@ -122,14 +121,9 @@ class ExpensesForm extends React.Component {
             </select>
             {' '}
           </label>
-          <button
-            id="addExpense"
-            name="addExpense"
-            type="submit"
-          >
-            Adicionar despesa
+          <button type="button" onClick={ this.handleClick }>
+            {!editWallet ? 'Adicionar despesa' : 'Editar despesa'}
           </button>
-
         </form>
       </header>
     );
@@ -141,14 +135,18 @@ ExpensesForm.propTypes = {
   expenses: PropTypes.arrayOf().isRequired,
   saveExpenses: PropTypes.func.isRequired,
   updateExpenses: PropTypes.func.isRequired,
+  editWallet: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  editWallet: state.wallet.editor,
 });
 const mapDispatchToProps = (dispatch) => ({
-  saveExpenses: (expenses) => { dispatch(userWallet(expenses)); },
+  saveExpenses: (expenses) => {
+    dispatch(userWallet(expenses));
+  },
   updateExpenses: () => dispatch(updateValue()),
 });
 
