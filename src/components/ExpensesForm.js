@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { userWallet, updateValue } from '../actions';
+import { userWallet, updateValue, editExpense } from '../actions';
 
 const expense = {
   value: '',
@@ -20,30 +20,48 @@ class ExpensesForm extends React.Component {
     this.setState({ [name]: value });
   };
 
-  registerButton = async (event) => {
-    event.preventDefault();
-    const { saveExpenses, updateExpenses, expenses } = this.props;
+  handleClickAdd = async () => {
+    const {
+      saveExpenses,
+      expenses,
+    } = this.props;
     const conversion = await fetch(
       'https://economia.awesomeapi.com.br/json/all',
     ).then((response) => response.json());
+
     saveExpenses({
       ...this.state,
       id: !expenses.length ? 0 : expenses.length,
       exchangeRates: conversion,
     });
-    updateExpenses({
-      ...this.state,
-      exchangeRates: conversion,
-    });
     this.setState({ ...expense });
   };
 
+  handleClickEdit = async (expenseEdited) => {
+    const {
+      editExpenses,
+    } = this.props;
+    editExpenses(expenseEdited);
+    this.setState((prevState) => ({
+      ...expense,
+      id: prevState.id,
+    }));
+  };
+
   render() {
-    const { currencies, editWallet } = this.props;
+    const { currencies, editWallet, idToEdit } = this.props;
     const { value, description, currency, method, tag } = this.state;
+    const expenseAlreadyEdited = {
+      id: idToEdit,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    };
     return (
       <header>
-        <form onSubmit={ this.registerButton }>
+        <form>
           <label htmlFor="value">
             Valor:
             <input
@@ -121,9 +139,20 @@ class ExpensesForm extends React.Component {
             </select>
             {' '}
           </label>
-          <button type="button" onClick={ this.handleClick }>
-            {!editWallet ? 'Adicionar despesa' : 'Editar despesa'}
-          </button>
+          {!editWallet ? (
+            <button type="button" onClick={ this.handleClickAdd }>
+              Adicionar despesa
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={
+                () => this.handleClickEdit(expenseAlreadyEdited)
+              }
+            >
+              Editar despesa
+            </button>
+          ) }
         </form>
       </header>
     );
@@ -131,23 +160,31 @@ class ExpensesForm extends React.Component {
 }
 
 ExpensesForm.propTypes = {
-  currencies: PropTypes.arrayOf().isRequired,
-  expenses: PropTypes.arrayOf().isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape).isRequired,
   saveExpenses: PropTypes.func.isRequired,
-  updateExpenses: PropTypes.func.isRequired,
-  editWallet: PropTypes.bool.isRequired,
+  editExpenses: PropTypes.func.isRequired,
+  editWallet: PropTypes.bool,
+  idToEdit: PropTypes.number,
+  /* walletId: PropTypes.number.isRequired, */
 };
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
-  editWallet: state.wallet.editor,
+  editWallet: state.wallet.editWallet,
 });
 const mapDispatchToProps = (dispatch) => ({
   saveExpenses: (expenses) => {
     dispatch(userWallet(expenses));
   },
   updateExpenses: () => dispatch(updateValue()),
+  editExpenses: (expenseEdited) => dispatch(editExpense(expenseEdited)),
 });
+
+ExpensesForm.defaultProps = {
+  editWallet: false,
+  idToEdit: 0,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);

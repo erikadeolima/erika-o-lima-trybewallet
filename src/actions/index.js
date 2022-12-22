@@ -6,6 +6,7 @@ export const CURRENCIES_REQUEST_SUCESS = 'CURRENCIES_REQUEST_SUCESS';
 export const UPDATE_VALUE = 'UPDATE_VALUE';
 export const DELETE_EXPENSES = 'DELETE_EXPENSES';
 export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const SET_EDIT = 'SET_EDIT';
 
 export const userLogin = (payload) => ({
   type: USER_LOGIN,
@@ -43,8 +44,15 @@ export const deleteExpensesAction = (id) => ({
   payload: id,
 });
 
-export const editExpense = (id, exchangeRates) => ({
+export const setIdToEditAction = (id) => ({
+  type: SET_EDIT,
+  payload: id,
+});
+
+export const editExpense = (id, expense) => ({
   type: EDIT_EXPENSE,
-  id,
-  exchangeRates,
+  payload: {
+    ...id,
+    ...expense,
+  },
 });
